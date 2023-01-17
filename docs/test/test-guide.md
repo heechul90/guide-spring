@@ -6,3 +6,5 @@
 | 방법 | 어노테이션 | 
 |------|------|
 | 통합테스트 | @SpringbootTest |
+| 단위테스트, MockTest | @ExtendWith |
+| 단위테스트, JpaTest | @DataJpaTest |
