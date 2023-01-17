@@ -8,3 +8,17 @@
 | 통합테스트 | @SpringbootTest |
 | 단위테스트, MockTest | @ExtendWith |
 | 단위테스트, JpaTest | @DataJpaTest |
+
+### 1. 통합테스트
+
+장점
+- 장점1
+- 장점2
+
+단점
+- 단점1
+- 단점2
+
+### 2. 단위테스트, MockTest
+
+### 3. 단위테스트, DataJpaTest
