@@ -4,6 +4,7 @@ import com.spring.guide.core.user.domain.User;
 import com.spring.guide.core.user.dto.SaveUserParam;
 import com.spring.guide.core.user.dto.UpdateUserParam;
 import com.spring.guide.core.user.dto.UserSearchCondition;
+import com.spring.guide.core.user.exception.UserNotFound;
 import com.spring.guide.core.user.repository.UserQueryRepository;
 import com.spring.guide.core.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class UserService {
      */
     public User findUser(Long userId) {
         return userRepository.findById(userId)
-                .orElse(null);
+                .orElseThrow(UserNotFound::new);
     }
 
     /**
@@ -51,7 +52,7 @@ public class UserService {
     @Transactional
     public void updateUser(Long userId, UpdateUserParam param) {
         User findUser = userRepository.findById(userId)
-                .orElse(null);
+                .orElseThrow(UserNotFound::new);
         findUser.updateUser(param);
     }
 
@@ -61,7 +62,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) {
         User findUser = userRepository.findById(userId)
-                .orElse(null);
+                .orElseThrow(UserNotFound::new);
         userRepository.delete(findUser);
     }
 }
