@@ -1,7 +1,9 @@
 package com.spring.guide.core.user.domain;
 
+import com.spring.guide.core.user.dto.UpdateUserParam;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +27,23 @@ public class User {
 
     private String name;
     private String email;
+
+    /**
+     * user 생성
+     */
+    @Builder(builderMethodName = "createUser")
+    public User(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    /**
+     * user 수정
+     */
+    public void updateUser(UpdateUserParam param) {
+        this.name = param.getName();
+        this.email = param.getEmail();
+    }
 }
