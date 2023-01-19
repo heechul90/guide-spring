@@ -6,5 +6,5 @@ Spring Boot 기반 msa 구조의 Rest API를 개발할 때 유지 보수하기 �
 
 # 목차
 
-1. [Test 전략 가이드](https://github.com/heechul90/study-spring-guide/blob/main/docs/test/test-guide.md)
-2. Exception 전략 가이드
+1. [Test 가이드](https://github.com/heechul90/study-spring-guide/blob/main/docs/test/test-guide.md)
+2. [Exception 가이드]()
