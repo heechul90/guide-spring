@@ -48,12 +48,16 @@ public class ErrorResponse {
         this.errors = new ArrayList<>();
     }
 
-    public static ErrorResponse of(final ErrorCode code, final String customMessage) {
-        return new ErrorResponse(code, customMessage);
-    }
-
     public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult, MessageSource messageSource) {
         return new ErrorResponse(code, FieldError.of(bindingResult), messageSource);
+    }
+
+    public static ErrorResponse of(final ErrorCode code, MessageSource messageSource) {
+        return new ErrorResponse(code, messageSource);
+    }
+
+    public static ErrorResponse of(final ErrorCode code, final String customMessage) {
+        return new ErrorResponse(code, customMessage);
     }
 
     /**
