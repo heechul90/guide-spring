@@ -1,12 +1,12 @@
 package com.spring.guide.core.user.dto;
 
 import com.spring.guide.core.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class SaveUserParam {
 
     private String loginId;
