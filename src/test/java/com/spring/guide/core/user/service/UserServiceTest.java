@@ -8,8 +8,7 @@ import com.spring.guide.core.user.exception.UserNotFound;
 import com.spring.guide.core.user.repository.UserQueryRepository;
 import com.spring.guide.core.user.repository.UserRepository;
 import com.spring.guide.test.MockTest;
-import com.spring.guide.test.setup.entity.UserSetup;
-import org.assertj.core.api.Assertions;
+import com.spring.guide.test.setup.UserSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,14 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;

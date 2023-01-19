@@ -1,4 +1,4 @@
-package com.spring.guide.test.setup.entity;
+package com.spring.guide.test.setup;
 
 import com.spring.guide.core.user.domain.User;
 import com.spring.guide.core.user.dto.SaveUserParam;
