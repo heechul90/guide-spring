@@ -24,10 +24,29 @@ public class UserController {
     private final UserService userService;
     private final MessageSource messageSource;
 
+    /**
+     * user 목록 조회
+     */
     @GetMapping
     public JsonResponse findUsers(UserSearchCondition condition, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         Page<User> content = userService.findUsers(condition, pageable);
 
         return JsonResponse.of(JsonCode.SUCCESS, null, messageSource);
     }
+
+    /**
+     * user 단건 조회
+     */
+
+    /**
+     * user 저장
+     */
+
+    /**
+     * user 수정
+     */
+
+    /**
+     * user 삭제
+     */
 }
