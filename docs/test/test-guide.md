@@ -89,10 +89,13 @@ class UserControllerTest extends IntegrationTest {
 - IntegrationTest 클래스를 상속받아 통일성을 높힙니다.
 - @PersistenceContext 어노테이션을 통해 EntityManager를 주입받습니다.
 - @Autowired 어노테이션을 통해 필요한 객체를 주입받습니다.
+- @BeforeEach 어노테이션을 통해 @Test 를 실행하기 전에 매번 실행하여 값을 세팅합니다.
+- @Nested 어노테이션을 통해 비슷한 관심사끼리 그룹화해주고 중첩 클래스를 이용해 계층적으로 테스트를 작성할 수 있습니다.
+- @DisplayName 어노테이션을 통해 테스트 클래스 혹은 테스트 메서드의 이름을 지정할 수 있습니다.
 - Given-When-Then 패턴으로 Test Code 를 작성한다.
-  - Given : 테스트에 사용할 User 를 준비한다.
-  - When : 실제로 테스트를 실행한다.
-  - Then : 테스트를 검증한다.
+  - Given : 테스트에 사용할 User 를 EntityManager 를 통해 영속성 컨텍스트를 준비한다.
+  - When : MockMvcRequestBuilders 클래스를 사용하여 실제로 테스트를 실행한다.
+  - Then : MockMvcResultMatchers 클래스를 사용하여 테스트를 검증한다.
 
 ### 2. 단위테스트(MockTest)
 단위테스트는 소스 코드의 독립된 특정 모듈을 개별적으로 검증하는 테스트이다.
@@ -181,3 +184,7 @@ class UserServiceTest extends MockTest {
 - @BeforeEach 어노테이션을 통해 @Test 를 실행하기 전에 매번 실행하여 값을 세팅합니다.
 - @Nested 어노테이션을 통해 비슷한 관심사끼리 그룹화해주고 중첩 클래스를 이용해 계층적으로 테스트를 작성할 수 있습니다.
 - @DisplayName 어노테이션을 통해 테스트 클래스 혹은 테스트 메서드의 이름을 지정할 수 있습니다.
+- Given-When-Then 패턴으로 Test Code 를 작성한다.
+  - Given : BDD(Behavior-Driven Development) 행위 주도 개발 방식인 BDDMockito 클래스의 given().willReturn(), given().willThrow() 메서드를 사용해 테스트 데이터를 준비합니다.
+  - When : 주입받은 Service 를 실행합니다.
+  - Then : Assertion.assertj 클래스를 통해 테스트를 검증합니다.
