@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum JsonCode {
 
     SUCCESS(200, "S001", "success"),
-    CREATED(201, "S001", "created")
+    CREATED(201, "S002", "created")
     ;
 
     private final int status;

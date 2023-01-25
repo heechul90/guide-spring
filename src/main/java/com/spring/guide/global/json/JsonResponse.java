@@ -3,8 +3,6 @@ package com.spring.guide.global.json;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
@@ -23,39 +21,26 @@ public class JsonResponse<T> {
 
     private static final String DEFAULT_SUCCESS_MESSAGE = "SUCCESS";
 
-    private JsonResponse(final JsonCode code, final @Nullable T data, MessageSource messageSource) {
+    private JsonResponse(final JsonCode code) {
         this.transaction_time = LocalDateTime.now();
-        this.message = messageSource.getMessage(code.getMessage(), new Object[]{}, DEFAULT_SUCCESS_MESSAGE, LocaleContextHolder.getLocale());
+        this.message = DEFAULT_SUCCESS_MESSAGE;
+        this.status = code.getStatus();
+        this.code = code.getCode();
+    }
+
+    private JsonResponse(final JsonCode code, final @Nullable T data) {
+        this.transaction_time = LocalDateTime.now();
+        this.message = DEFAULT_SUCCESS_MESSAGE;
         this.status = code.getStatus();
         this.code = code.getCode();
         this.data = data;
     }
 
-    private JsonResponse(final JsonCode code, MessageSource messageSource) {
-        this.transaction_time = LocalDateTime.now();
-        this.message = messageSource.getMessage(code.getMessage(), new Object[]{}, DEFAULT_SUCCESS_MESSAGE, LocaleContextHolder.getLocale());
-        this.status = code.getStatus();
-        this.code = code.getCode();
-        this.data = null;
+    public static JsonResponse of(final JsonCode code) {
+        return new JsonResponse(code);
     }
 
-    private JsonResponse(final JsonCode code, String customMessage) {
-        this.transaction_time = LocalDateTime.now();
-        this.message = customMessage;
-        this.status = code.getStatus();
-        this.code = code.getCode();
-        this.data = null;
-    }
-
-    public static <T> JsonResponse<T> of(final JsonCode code, final @Nullable T data, MessageSource messageSource) {
-        return new JsonResponse(code, data, messageSource);
-    }
-
-    public static JsonResponse of(final JsonCode code, MessageSource messageSource) {
-        return new JsonResponse(code, messageSource);
-    }
-
-    public static JsonResponse of(final JsonCode code, final String customMessage) {
-        return new JsonResponse(code, customMessage);
+    public static <T> JsonResponse<T> of(final JsonCode code, final @Nullable T data) {
+        return new JsonResponse<T>(code, data);
     }
 }
