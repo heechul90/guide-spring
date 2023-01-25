@@ -8,11 +8,8 @@ import com.spring.guide.test.IntegrationTest;
 import com.spring.guide.test.setup.UserSetup;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UserControllerTest extends IntegrationTest {
 
-    @PersistenceContext protected EntityManager em;
-    @Autowired protected MockMvc mockMvc;
-    @Autowired protected ObjectMapper objectMapper;
     @Autowired protected UserService userService;
 
     private User user;
@@ -35,6 +29,7 @@ class UserControllerTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("user 목록 조회")
     void findUsers() {
         //given
 
@@ -50,7 +45,7 @@ class UserControllerTest extends IntegrationTest {
         em.persist(user);
 
         //when
-        ResultActions resultActions = mockMvc.perform(get("/api/v1/users/{userId}", user.getId()));
+        ResultActions resultActions = mockMvc.perform(get(UserSetup.API_FIND_USER, user.getId()));
 
         //then
         resultActions
@@ -68,6 +63,7 @@ class UserControllerTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("user 저장")
     void saveUser() {
         //given
 
@@ -77,6 +73,7 @@ class UserControllerTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("user 수정")
     void updateUser() {
         //given
 
@@ -86,6 +83,7 @@ class UserControllerTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("user 삭제")
     void deleteUser() {
         //given
 

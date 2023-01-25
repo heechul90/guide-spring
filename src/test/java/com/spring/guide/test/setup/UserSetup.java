@@ -10,19 +10,27 @@ import org.springframework.data.domain.PageRequest;
 public class UserSetup {
 
     //CREATE
-    private static final Long USER_ID = 1L;
-    private static final String LOGIN_ID = "spring";
-    private static final String PASSWORD = "1234";
-    private static final String NAME = "맹구";
-    private static final String EMAIL = "mg@spring.com";
+    public static final Long USER_ID = 1L;
+    public static final String LOGIN_ID = "spring";
+    public static final String PASSWORD = "1234";
+    public static final String NAME = "맹구";
+    public static final String EMAIL = "mg@spring.com";
 
     //UPDATE
     public static final String UPDATE_NAME = "짱구";
     public static final String UPDATE_EMAIL = "jg@spring.com";
 
     //EXCEPTION
-    private static final Long USER_NOT_FOUND_ID = 1L;
+    public static final Long USER_NOT_FOUND_ID = 1L;
     public static final String USER_NOT_FOUND_MESSAGE = "존재하지 않는 유저입니다.";
+
+    //URL
+    public static final String API_FIND_USERS = "/api/v1/users";
+    public static final String API_FIND_USER = "/api/v1/users/{userId}";
+    public static final String API_SAVE_USER = "/api/v1/users";
+    public static final String API_UPDATE_USER = "/api/v1/users/{userId}";
+    public static final String API_DELETE_USER = "/api/v1/users/{userId}";
+
 
     public static User build() {
         return User.createUser()
