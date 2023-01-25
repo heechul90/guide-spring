@@ -23,6 +23,77 @@
 - 테스트 단위가 커 디버깅이 어렵다.
 - 외부 API 콜같은 Rollback 처리가 안되는 테스트는 진행하기 어렵다.
 
+#### Code  :point_right: [source 보기]()
+IntegrationTest
+```java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@AutoConfigureRestDocs
+@ActiveProfiles("test")
+@Transactional
+public class IntegrationTest {
+    
+}
+```
+- 통합테스트의 Base 클래스
+- Controller Layer 를 주로 테스트 합니다.
+- @SpringBootTest 어노테이션을 통해 통합 테스트를 위한 환경을 준비합니다.
+- @AutoConfigureMockMvc 어노테이션을 통해 @Service나 @Repository가 붙은 객체들도 메모리에 올립니다.
+- @AutoConfigureTestDatabase 어노테이션을 통해 데이터베이스 설정을 변경합니다.
+- @AutoConfigureRestDocs 어노테이션을 통해 Rest Docs를 설정합니다.(여기서는 사용하지 않습니다.)
+- @ActiveProfiles 어노테이션을 통해 테스트 프로파일을 설정합니다.
+- @Transactional 어노테이션을 통해 테스트코드의 데이터베이스 정보가 자동으로 Rollback 됩니다.
+
+Test Code
+```java
+class UserControllerTest extends IntegrationTest {
+    
+    @PersistenceContext protected EntityManager em;
+    @Autowired protected MockMvc mockMvc;
+    @Autowired protected ObjectMapper objectMapper;
+    @Autowired protected UserService userService;
+
+    private User user;
+
+    @BeforeEach
+    void beforeEach() {
+        user = UserSetup.build();
+    }
+
+    @Test
+    @DisplayName("user 단건 조회")
+    void findUser() throws Exception {
+        //given
+        em.persist(user);
+
+        //when
+        ResultActions resultActions = mockMvc.perform(get("/api/v1/users/{userId}", user.getId()));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_time").isNotEmpty())
+                .andExpect(jsonPath("$.message").value(JsonCode.SUCCESS.name()))
+                .andExpect(jsonPath("$.status").value(JsonCode.SUCCESS.getStatus()))
+                .andExpect(jsonPath("$.code").value(JsonCode.SUCCESS.getCode()))
+                .andExpect(jsonPath("$.data.userId").value(user.getId()))
+                .andExpect(jsonPath("$.data.loginId").value(user.getLoginId()))
+                .andExpect(jsonPath("$.data.password").value(user.getPassword()))
+                .andExpect(jsonPath("$.data.userName").value(user.getName()))
+                .andExpect(jsonPath("$.data.userEmail").value(user.getEmail()))
+                .andDo(print());
+    }
+}
+```
+- IntegrationTest 클래스를 상속받아 통일성을 높힙니다.
+- @PersistenceContext 어노테이션을 통해 EntityManager를 주입받습니다.
+- @Autowired 어노테이션을 통해 필요한 객체를 주입받습니다.
+- Given-When-Then 패턴으로 Test Code 를 작성한다.
+  - Given : 테스트에 사용할 User 를 준비한다.
+  - When : 실제로 테스트를 실행한다.
+  - Then : 테스트를 검증한다.
+
 ### 2. 단위테스트(MockTest)
 단위테스트는 소스 코드의 독립된 특정 모듈을 개별적으로 검증하는 테스트이다.
 
@@ -43,6 +114,7 @@ public class MockTest {
     
 }
 ```
+- 단위 테스트의 Base 클래스
 - Service Layer 를 주로 테스트 합니다.
 - MockitoExtension 을 통해 Mock 테스트를 합니다.
 
@@ -107,5 +179,5 @@ class UserServiceTest extends MockTest {
 - @InjectMocks 어노테이션을 통해 Mocking 한 객체를 주입받아 테스트할 서비스의 메서드를 실행합니다.
 - @Mock 어노테이션을 통해 Mocking 할 객체를 선언합니다.
 - @BeforeEach 어노테이션을 통해 @Test 를 실행하기 전에 매번 실행하여 값을 세팅합니다.
-- @Nested 어노테이션을 통해 비슷한 관심사끼리 그룹화해주고 중첩 클래슬ㄹ 이용해 계층적으로 테스트를 작성할 수 있습니다.
+- @Nested 어노테이션을 통해 비슷한 관심사끼리 그룹화해주고 중첩 클래스를 이용해 계층적으로 테스트를 작성할 수 있습니다.
 - @DisplayName 어노테이션을 통해 테스트 클래스 혹은 테스트 메서드의 이름을 지정할 수 있습니다.
