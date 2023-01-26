@@ -204,7 +204,7 @@ jpa 관련된 설정들만 로드하여 검증하는 테스트입니다.
 
 #### Code
 
-RepositoryTest  :point_right: [source 보기]()
+RepositoryTest  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/test/RepositoryTest.java)
 ```java
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -217,7 +217,7 @@ public class RepositoryTest {
 - @DataJpaTest 어노테이션을 통해
 - @AutoConfigureTestDatabase
 
-UserRepositoryTest  :point_right: [source 보기]()
+UserRepositoryTest  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/repository/UserRepositoryTest.java)
 ```java
 @Import(UserTestConfig.class)
 class UserRepositoryTest extends RepositoryTest {
