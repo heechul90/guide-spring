@@ -23,7 +23,7 @@
 - 테스트 단위가 커 디버깅이 어렵다.
 - 외부 API 콜같은 Rollback 처리가 안되는 테스트는 진행하기 어렵다.
 
-#### Code  :point_right: [source 보기]()
+#### Code  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/controller/UserControllerTest.java)
 IntegrationTest
 ```java
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
