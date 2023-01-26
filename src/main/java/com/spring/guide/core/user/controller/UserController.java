@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,7 @@ public class UserController {
      * user 저장
      */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public JsonResponse saveUser(@RequestBody @Validated SaveUserRequest request) {
         //validate
         request.validate();
@@ -81,6 +83,7 @@ public class UserController {
      * user 삭제
      */
     @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public JsonResponse deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
         return JsonResponse.of(JsonCode.SUCCESS);

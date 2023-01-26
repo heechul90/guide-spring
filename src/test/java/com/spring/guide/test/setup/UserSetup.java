@@ -7,6 +7,10 @@ import com.spring.guide.core.user.dto.UpdateUserParam;
 import com.spring.guide.core.user.dto.UserSearchCondition;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 public class UserSetup {
 
     //CREATE
@@ -41,6 +45,12 @@ public class UserSetup {
                 .build();
     }
 
+    public static List<User> usersBuild() {
+        List<User> users = new ArrayList<>();
+        IntStream.range(0, 10).forEach(i -> users.add(new User(LOGIN_ID + i, PASSWORD, NAME + i, EMAIL)));
+        return users;
+    }
+
     public static SaveUserParam saveUserParamBuild() {
         return SaveUserParam.builder()
                 .loginId(LOGIN_ID)
@@ -66,17 +76,5 @@ public class UserSetup {
 
     public static PageRequest pageRequestBuild() {
         return PageRequest.of(0, 10);
-    }
-
-    public static Long userId() {
-        return USER_ID;
-    }
-
-    public static Long userNotFoundId() {
-        return USER_NOT_FOUND_ID;
-    }
-
-    public static String userNotFoundMessage() {
-        return USER_NOT_FOUND_MESSAGE;
     }
 }

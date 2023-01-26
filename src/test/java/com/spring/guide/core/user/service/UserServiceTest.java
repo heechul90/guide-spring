@@ -69,7 +69,7 @@ class UserServiceTest extends MockTest {
             given(userRepository.findById(any(Long.class))).willReturn(Optional.ofNullable(user));
 
             //when
-            User findUser = userService.findUser(UserSetup.userId());
+            User findUser = userService.findUser(UserSetup.USER_ID);
 
             //then
             assertThat(findUser.getLoginId()).isEqualTo(user.getLoginId());
@@ -109,7 +109,7 @@ class UserServiceTest extends MockTest {
             UpdateUserParam param = UserSetup.updateUserParamBuild();
 
             //when
-            userService.updateUser(UserSetup.userId(), param);
+            userService.updateUser(UserSetup.USER_ID, param);
 
             //then
             assertThat(user.getName()).isEqualTo(param.getName());
@@ -126,7 +126,7 @@ class UserServiceTest extends MockTest {
             given(userRepository.findById(any(Long.class))).willReturn(Optional.ofNullable(user));
 
             //when
-            userService.deleteUser(UserSetup.userId());
+            userService.deleteUser(UserSetup.USER_ID);
 
             //then
 
@@ -147,9 +147,9 @@ class UserServiceTest extends MockTest {
             given(userRepository.findById(any(Long.class))).willThrow(new UserNotFound());
 
             //expected
-            assertThatThrownBy(() -> userService.findUser(UserSetup.userNotFoundId()))
+            assertThatThrownBy(() -> userService.findUser(UserSetup.USER_NOT_FOUND_ID))
                     .isInstanceOf(UserNotFound.class)
-                    .hasMessage(UserSetup.userNotFoundMessage());
+                    .hasMessage(UserSetup.USER_NOT_FOUND_MESSAGE);
         }
 
         @Test
@@ -159,9 +159,9 @@ class UserServiceTest extends MockTest {
             given(userRepository.findById(any(Long.class))).willThrow(new UserNotFound());
 
             //expected
-            assertThatThrownBy(() -> userService.updateUser(UserSetup.userNotFoundId(), UserSetup.updateUserParamBuild()))
+            assertThatThrownBy(() -> userService.updateUser(UserSetup.USER_NOT_FOUND_ID, UserSetup.updateUserParamBuild()))
                     .isInstanceOf(UserNotFound.class)
-                    .hasMessage(UserSetup.userNotFoundMessage());
+                    .hasMessage(UserSetup.USER_NOT_FOUND_MESSAGE);
         }
 
         @Test
@@ -171,9 +171,9 @@ class UserServiceTest extends MockTest {
             given(userRepository.findById(any(Long.class))).willThrow(new UserNotFound());
 
             //expected
-            assertThatThrownBy(() -> userService.deleteUser(UserSetup.userNotFoundId()))
+            assertThatThrownBy(() -> userService.deleteUser(UserSetup.USER_NOT_FOUND_ID))
                     .isInstanceOf(UserNotFound.class)
-                    .hasMessage(UserSetup.userNotFoundMessage());
+                    .hasMessage(UserSetup.USER_NOT_FOUND_MESSAGE);
         }
     }
 }
