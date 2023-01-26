@@ -23,8 +23,9 @@
 - 테스트 단위가 커 디버깅이 어렵다.
 - 외부 API 콜같은 Rollback 처리가 안되는 테스트는 진행하기 어렵다.
 
-#### Code  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/controller/UserControllerTest.java)
-IntegrationTest
+#### Code
+
+IntegrationTest :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/test/IntegrationTest.java)
 ```java
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -33,7 +34,10 @@ IntegrationTest
 @ActiveProfiles("test")
 @Transactional
 public class IntegrationTest {
-    
+
+  @PersistenceContext protected EntityManager em;
+  @Autowired protected MockMvc mockMvc;
+  @Autowired protected ObjectMapper objectMapper;
 }
 ```
 - 통합테스트의 Base 클래스
@@ -44,14 +48,13 @@ public class IntegrationTest {
 - @AutoConfigureRestDocs 어노테이션을 통해 Rest Docs를 설정합니다.(여기서는 사용하지 않습니다.)
 - @ActiveProfiles 어노테이션을 통해 테스트 프로파일을 설정합니다.
 - @Transactional 어노테이션을 통해 테스트코드의 데이터베이스 정보가 자동으로 Rollback 됩니다.
+- @PersistenceContext 어노테이션을 통해 EntityManager를 주입받습니다.
 
-Test Code
+
+UserControllerTest  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/controller/UserControllerTest.java)
 ```java
 class UserControllerTest extends IntegrationTest {
     
-    @PersistenceContext protected EntityManager em;
-    @Autowired protected MockMvc mockMvc;
-    @Autowired protected ObjectMapper objectMapper;
     @Autowired protected UserService userService;
 
     private User user;
@@ -87,7 +90,6 @@ class UserControllerTest extends IntegrationTest {
 }
 ```
 - IntegrationTest 클래스를 상속받아 통일성을 높힙니다.
-- @PersistenceContext 어노테이션을 통해 EntityManager를 주입받습니다.
 - @Autowired 어노테이션을 통해 필요한 객체를 주입받습니다.
 - @BeforeEach 어노테이션을 통해 @Test 를 실행하기 전에 매번 실행하여 값을 세팅합니다.
 - @Nested 어노테이션을 통해 비슷한 관심사끼리 그룹화해주고 중첩 클래스를 이용해 계층적으로 테스트를 작성할 수 있습니다.
@@ -107,9 +109,9 @@ class UserControllerTest extends IntegrationTest {
 #### 단점
 - 의존성 있는 객체를 Mocking 하기 때문에 완결한 테스트가 아니다.
 
-#### Code  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/service/UserServiceTest.java)
+#### Code
 
-MockTest
+MockTest :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/test/MockTest.java)
 ```java
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -121,7 +123,8 @@ public class MockTest {
 - Service Layer 를 주로 테스트 합니다.
 - MockitoExtension 을 통해 Mock 테스트를 합니다.
 
-Test Code
+
+UserServiceTest  :point_right: [source 보기](https://github.com/heechul90/study-spring-guide/blob/main/src/test/java/com/spring/guide/core/user/service/UserServiceTest.java)
 ```java
 class UserServiceTest extends MockTest {
 
