@@ -11,7 +11,7 @@
 ![](img01.png)
 
 
-### 1. 통합테스트
+### 1. 통합 테스트
 통합테스트는 테스트하고자 하는 코드가 각 모듈들의 상호 작용이 제대로 이루어지는지 검증하는 테스트이다.
 
 #### 장점
@@ -99,7 +99,7 @@ class UserControllerTest extends IntegrationTest {
   - When : MockMvcRequestBuilders 클래스를 사용하여 실제로 테스트를 실행한다.
   - Then : MockMvcResultMatchers 클래스를 사용하여 테스트를 검증한다.
 
-### 2. 단위테스트(MockTest)
+### 2. 단위 테스트
 단위테스트는 소스 코드의 독립된 특정 모듈을 개별적으로 검증하는 테스트이다.
 
 #### 장점
@@ -190,4 +190,69 @@ class UserServiceTest extends MockTest {
 - Given-When-Then 패턴으로 Test Code 를 작성한다.
   - Given : BDD(Behavior-Driven Development) 행위 주도 개발 방식인 BDDMockito 클래스의 given().willReturn(), given().willThrow() 메서드를 사용해 테스트 데이터를 준비합니다.
   - When : 주입받은 Service 를 실행합니다.
+  - Then : Assertion.assertj 클래스를 통해 테스트를 검증합니다.
+
+
+### 3. 레포지토리 테스트
+jpa 관련된 설정들만 로드하여 검증하는 테스트입니다.
+
+#### 장점
+- Repository 관련된 Bean 들만 등록하기 때문에 통합 테스트에 비해서 빠릅니다.
+
+#### 단점
+- 테스트 범위가 작기 때문에 실제 환경과 차이가 발생합니다.
+
+#### Code
+
+RepositoryTest  :point_right: [source 보기]()
+```java
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@ActiveProfiles("test")
+public class RepositoryTest {
+
+    @PersistenceContext protected EntityManager em;
+}
+```
+- @DataJpaTest 어노테이션을 통해
+- @AutoConfigureTestDatabase
+
+UserRepositoryTest  :point_right: [source 보기]()
+```java
+@Import(UserTestConfig.class)
+class UserRepositoryTest extends RepositoryTest {
+
+    @Autowired protected UserQueryRepository userQueryRepository;
+    @Autowired protected UserRepository userRepository;
+
+    @Nested
+    @DisplayName("user 레포지토리 성공 테스트")
+    class SuccessfulTest {
+
+        @Test
+        @DisplayName("user 목록 조회")
+        void findUsers() {
+            //given
+            List<User> users = UserSetup.usersBuild();
+            userRepository.saveAll(users);
+
+            UserSearchCondition condition = UserSetup.userSearchConditionBuild();
+            PageRequest pageRequest = UserSetup.pageRequestBuild();
+
+            //when
+            Page<User> content = userQueryRepository.findUsers(condition, pageRequest);
+
+            //then
+            assertThat(content.getTotalElements()).isEqualTo(10);
+            assertThat(content.getContent().size()).isEqualTo(10);
+        }
+    }
+}
+```
+- @Import 어노테이션을 통해 필요한 클래스를 Bean 으로 등록합니다.
+- @Autowired 어노테이션을 통해 UserQueryRepository 와 UserRepository 클래스를 주입 받습니다.
+- @Nested 어노테이션을 통해 중첩된 구조로 테스트를 구정합니다.
+- Given-When-Then 패턴으로 Test Code 를 작성합니다.
+  - Given : EntityManager 나 Repository 를 통해서 데이터를 데이터베이스에 준비시킵니다.
+  - When : UserQueryRepository 또는 UserRepository 주입받아 실제로 테스트를 실행합니다.
   - Then : Assertion.assertj 클래스를 통해 테스트를 검증합니다.
