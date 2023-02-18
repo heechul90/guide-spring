@@ -1,4 +1,4 @@
-# study-spring-guide
+# guide-spring
 
 # 소개
 
